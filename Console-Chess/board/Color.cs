@@ -2,8 +2,8 @@
 {
     enum Color
     {
-        Branca,
-        Preta,
+        Black,
+        White,
         Amarela,
         Azul,
         Vermelha,

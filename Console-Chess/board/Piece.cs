@@ -7,12 +7,12 @@
         public int qntMoviments { get; protected set; }
         public Board brd{ get; protected set; }
 
-        public Piece(Position position, Color color, Board brd)
+        public Piece(Board brd, Color color)
         {
-            this.position = position;
+            this.position = null;
             this.color = color;
             this.brd = brd;
-            this.qntMoviments = 0; //start quant
+            this.qntMoviments = 0;
         }
     }
 }
