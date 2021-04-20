@@ -14,5 +14,10 @@
             this.brd = brd;
             this.qntMoviments = 0;
         }
+
+        public void incrementQntMoviments()
+        {
+            qntMoviments++;
+        }
     }
 }

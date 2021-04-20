@@ -10,14 +10,8 @@ namespace Console_Chess
         {
             try
             {
-                Board brd = new Board(8, 8);
-
-                brd.placePiece(new Rook(brd, Color.Black), new Position(0, 0));
-                brd.placePiece(new Rook(brd, Color.Black), new Position(0, 7));
-                brd.placePiece(new Rook(brd, Color.White), new Position(7, 0));
-                brd.placePiece(new Rook(brd, Color.White), new Position(7, 7));
-
-                Screen.printBoard(brd);
+                ChessMatch match = new ChessMatch();
+                Screen.printBoard(match.brd);
             }
             catch(BoardException e)
             {
