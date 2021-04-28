@@ -11,7 +11,21 @@ namespace Console_Chess
             try
             {
                 ChessMatch match = new ChessMatch();
-                Screen.printBoard(match.brd);
+
+                while (!match.finished)
+                {
+                    Console.Clear();
+                    Screen.printBoard(match.brd);
+
+                    Console.WriteLine();
+                    Console.Write("Origin: ");
+                    Position origin = Screen.readPosition().toPosition();
+                    Console.Write("Destination: ");
+                    Position destination = Screen.readPosition().toPosition();
+
+                    match.executeMoviment(origin, destination);
+                }
+                
             }
             catch(BoardException e)
             {

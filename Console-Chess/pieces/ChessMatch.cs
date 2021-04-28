@@ -8,12 +8,14 @@ namespace pieces
         public Board brd { get; private set; }
         private int turn;
         private Color currentPlayer;
+        public bool finished { get; private set; }
 
         public ChessMatch()
         {
             brd = new Board(8, 8);
             turn = 1;
             currentPlayer = Color.White;
+            finished = false;
             placePieces();
         }
 
