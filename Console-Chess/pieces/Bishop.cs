@@ -12,5 +12,14 @@ namespace pieces
         {
             return "B";
         }
+
+        public override bool[,] possibleMovements()
+        {
+            bool[,] mat = new bool[brd.rows, brd.columns];
+
+            Position pos = new Position(0, 0);
+
+            return mat;
+        }
     }
 }

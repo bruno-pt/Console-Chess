@@ -20,6 +20,13 @@ namespace Console_Chess
                     Console.WriteLine();
                     Console.Write("Origin: ");
                     Position origin = Screen.readPosition().toPosition();
+
+                    bool[,] possiblePositions = match.brd.piece(origin).possibleMovements();
+
+                    Console.Clear();
+                    Screen.printBoard(match.brd, possiblePositions);
+
+                    Console.WriteLine();
                     Console.Write("Destination: ");
                     Position destination = Screen.readPosition().toPosition();
 
