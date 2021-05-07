@@ -20,6 +20,25 @@
             qntMoviments++;
         }
 
+        public bool existePossibleMovements()
+        {
+            bool[,] mat = possibleMovements();
+            for(int i=0; i<brd.rows; i++)
+            {
+                for(int j=0; j<brd.columns; j++)
+                {
+                    if (mat[i, j] == true)
+                        return true;
+                }
+            }
+            return false;
+        }
+
+        public bool canMoveTo(Position pos)
+        {
+            return possibleMovements()[pos.row, pos.column];
+        }
+
         public abstract bool[,] possibleMovements();
     }
 }
