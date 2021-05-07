@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.Collections.Generic;
 using board;
 
 namespace pieces
@@ -9,6 +9,8 @@ namespace pieces
         public int turn { get; private set; }
         public Color currentPlayer { get; private set; }
         public bool finished { get; private set; }
+        private HashSet<Piece> pieces;
+        private HashSet<Piece> captured;
 
         public ChessMatch()
         {
@@ -16,6 +18,8 @@ namespace pieces
             turn = 1;
             currentPlayer = Color.White;
             finished = false;
+            pieces = new HashSet<Piece>();
+            captured = new HashSet<Piece>();
             placePieces();
         }
 
@@ -25,6 +29,8 @@ namespace pieces
             p.incrementQntMoviments();
             Piece capturedPiece = brd.removePiece(destination);
             brd.placePiece(p, destination);
+            if (capturedPiece != null)
+                captured.Add(capturedPiece);
         }
 
         public void performMove(Position origin, Position destination)
@@ -63,25 +69,54 @@ namespace pieces
                 currentPlayer = Color.White;
         }
 
+        public HashSet<Piece> capturedPieces(Color color)
+        {
+            HashSet<Piece> aux = new HashSet<Piece>();
+            foreach(Piece p in captured)
+            {
+                if (p.color == color)
+                    aux.Add(p);
+            }
+            return aux;
+        }
+
+        public HashSet<Piece> inGamePieces(Color color)
+        {
+            HashSet<Piece> aux = new HashSet<Piece>();
+            foreach (Piece p in pieces)
+            {
+                if (p.color == color)
+                    aux.Add(p);
+            }
+            aux.ExceptWith(capturedPieces(color));
+            return aux;
+        }
+
+        public void placeNewPiece(char column, int row, Piece piece)
+        {
+            brd.placePiece(piece, new PiecePosition(column, row).toPosition());
+            pieces.Add(piece);
+        }
+
         private void placePieces()
         {
-            brd.placePiece(new Rook(brd, Color.Black), new PiecePosition('a', 8).toPosition());
-            brd.placePiece(new Knight(brd, Color.Black), new PiecePosition('b', 8).toPosition());
-            brd.placePiece(new Bishop(brd, Color.Black), new PiecePosition('c', 8).toPosition());
-            brd.placePiece(new Queen(brd, Color.Black), new PiecePosition('d', 8).toPosition());
-            brd.placePiece(new King(brd, Color.Black), new PiecePosition('e', 8).toPosition());
-            brd.placePiece(new Bishop(brd, Color.Black), new PiecePosition('f', 8).toPosition());
-            brd.placePiece(new Knight(brd, Color.Black), new PiecePosition('g', 8).toPosition());
-            brd.placePiece(new Rook(brd, Color.Black), new PiecePosition('h', 8).toPosition());
+            placeNewPiece('a', 8, new Rook(brd, Color.Black));
+            placeNewPiece('b', 8, new Knight(brd, Color.Black));
+            placeNewPiece('c', 8, new Bishop(brd, Color.Black));
+            placeNewPiece('d', 8, new Queen(brd, Color.Black));
+            placeNewPiece('e', 8, new King(brd, Color.Black));
+            placeNewPiece('f', 8, new Bishop(brd, Color.Black));
+            placeNewPiece('g', 8, new Knight(brd, Color.Black));
+            placeNewPiece('h', 8, new Rook(brd, Color.Black));
 
-            brd.placePiece(new Rook(brd, Color.White), new PiecePosition('a', 1).toPosition());
-            brd.placePiece(new Knight(brd, Color.White), new PiecePosition('b', 1).toPosition());
-            brd.placePiece(new Bishop(brd, Color.White), new PiecePosition('c', 1).toPosition());
-            brd.placePiece(new Queen(brd, Color.White), new PiecePosition('d', 1).toPosition());
-            brd.placePiece(new King(brd, Color.White), new PiecePosition('e', 1).toPosition());
-            brd.placePiece(new Bishop(brd, Color.White), new PiecePosition('f', 1).toPosition());
-            brd.placePiece(new Knight(brd, Color.White), new PiecePosition('g', 1).toPosition());
-            brd.placePiece(new Rook(brd, Color.White), new PiecePosition('h', 1).toPosition());
+            placeNewPiece('a', 1, new Rook(brd, Color.White));
+            placeNewPiece('b', 1, new Knight(brd, Color.White));
+            placeNewPiece('c', 1, new Bishop(brd, Color.White));
+            placeNewPiece('d', 1, new Queen(brd, Color.White));
+            placeNewPiece('e', 1, new King(brd, Color.White));
+            placeNewPiece('f', 1, new Bishop(brd, Color.White));
+            placeNewPiece('g', 1, new Knight(brd, Color.White));
+            placeNewPiece('h', 1, new Rook(brd, Color.White));
         }
     }
 }

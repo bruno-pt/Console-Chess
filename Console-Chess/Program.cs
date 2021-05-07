@@ -17,10 +17,7 @@ namespace Console_Chess
                     try
                     {
                         Console.Clear();
-                        Screen.printBoard(match.brd);
-                        Console.WriteLine();
-                        Console.WriteLine("Turn: " + match.turn);
-                        Console.WriteLine("Waiting move: " + match.currentPlayer);
+                        Screen.printMatch(match);
 
                         Console.WriteLine();
                         Console.Write("Origin: ");
