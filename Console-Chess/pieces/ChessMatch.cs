@@ -11,6 +11,7 @@ namespace pieces
         public bool finished { get; private set; }
         private HashSet<Piece> pieces;
         private HashSet<Piece> captured;
+        public bool check { get; private set; }
 
         public ChessMatch()
         {
@@ -18,12 +19,13 @@ namespace pieces
             turn = 1;
             currentPlayer = Color.White;
             finished = false;
+            check = false;
             pieces = new HashSet<Piece>();
             captured = new HashSet<Piece>();
             placePieces();
         }
 
-        public void executeMoviment(Position origin, Position destination)
+        public Piece executeMovement(Position origin, Position destination)
         {
             Piece p = brd.removePiece(origin);
             p.incrementQntMoviments();
@@ -31,11 +33,37 @@ namespace pieces
             brd.placePiece(p, destination);
             if (capturedPiece != null)
                 captured.Add(capturedPiece);
+            return capturedPiece;
+        }
+
+        public void undoMove(Position origin, Position destination, Piece capturedPiece)
+        {
+            Piece p = brd.removePiece(destination);
+            p.decrementQntMoviments();
+
+            if(capturedPiece != null)
+            {
+                brd.placePiece(capturedPiece, destination);
+                captured.Remove(capturedPiece);
+            }
+            brd.placePiece(p, origin);
         }
 
         public void performMove(Position origin, Position destination)
         {
-            executeMoviment(origin, destination);
+            Piece capturedPiece = executeMovement(origin, destination);
+
+            if (isInCheck(currentPlayer))
+            {
+                undoMove(origin, destination, capturedPiece);
+                throw new BoardException("You can't put yourself in check!");
+            }
+
+            if (isInCheck(opponent(currentPlayer)))
+                check = true;
+            else
+                check = false;
+
             turn++;
             changePlayer();
         }
@@ -78,6 +106,37 @@ namespace pieces
                     aux.Add(p);
             }
             return aux;
+        }
+
+        private Color opponent (Color color)
+        {
+            if (color == Color.White)
+                return Color.Black;
+            else
+                return Color.White;
+        }
+
+        private Piece king(Color color)
+        {
+            foreach(Piece p in inGamePieces(color))
+            {
+                if (p is King)
+                    return p;
+            }
+            return null;
+        }
+
+        public bool isInCheck(Color color)
+        {
+            Piece K = king(color);
+
+            foreach(Piece p in inGamePieces(opponent(color)))
+            {
+                bool[,] mat = p.possibleMovements();
+                if (mat[K.position.row, K.position.column])
+                    return true;
+            }
+            return false;
         }
 
         public HashSet<Piece> inGamePieces(Color color)
