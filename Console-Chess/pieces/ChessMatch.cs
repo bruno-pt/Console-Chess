@@ -64,8 +64,13 @@ namespace pieces
             else
                 check = false;
 
-            turn++;
-            changePlayer();
+            if (testCheckMate(opponent(currentPlayer)))
+                finished = true;
+            else
+            {
+                turn++;
+                changePlayer();
+            }
         }
 
         public void validateOriginPosition(Position pos)
@@ -137,6 +142,33 @@ namespace pieces
                     return true;
             }
             return false;
+        }
+
+        public bool testCheckMate(Color color)
+        {
+            if (!isInCheck(color))
+                return false;
+
+            foreach(Piece p in inGamePieces(color))
+            {
+                bool[,] mat = p.possibleMovements();
+                for(int i=0; i<brd.rows; i++)
+                {
+                    for(int j=0; i<brd.columns; j++)
+                    {
+                        if (mat[i, j])
+                        {
+                            Position destination = new Position(i, j);
+                            Piece capturedPiece = executeMovement(p.position, destination);
+                            bool testCheck = isInCheck(color);
+                            undoMove(p.position, destination, capturedPiece);
+                            if (!testCheck)
+                                return false;
+                        }
+                    }
+                }
+            }
+            return true;
         }
 
         public HashSet<Piece> inGamePieces(Color color)
