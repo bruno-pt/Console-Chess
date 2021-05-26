@@ -158,10 +158,11 @@ namespace pieces
                     {
                         if (mat[i, j])
                         {
+                            Position origin = p.position;
                             Position destination = new Position(i, j);
-                            Piece capturedPiece = executeMovement(p.position, destination);
+                            Piece capturedPiece = executeMovement(origin, destination);
                             bool testCheck = isInCheck(color);
-                            undoMove(p.position, destination, capturedPiece);
+                            undoMove(origin, destination, capturedPiece);
                             if (!testCheck)
                                 return false;
                         }
@@ -199,6 +200,14 @@ namespace pieces
             placeNewPiece('f', 8, new Bishop(brd, Color.Black));
             placeNewPiece('g', 8, new Knight(brd, Color.Black));
             placeNewPiece('h', 8, new Rook(brd, Color.Black));
+            placeNewPiece('a', 7, new Pawn(brd, Color.Black));
+            placeNewPiece('b', 7, new Pawn(brd, Color.Black));
+            placeNewPiece('c', 7, new Pawn(brd, Color.Black));
+            placeNewPiece('d', 7, new Pawn(brd, Color.Black));
+            placeNewPiece('e', 7, new Pawn(brd, Color.Black));
+            placeNewPiece('f', 7, new Pawn(brd, Color.Black));
+            placeNewPiece('g', 7, new Pawn(brd, Color.Black));
+            placeNewPiece('h', 7, new Pawn(brd, Color.Black));
 
             placeNewPiece('a', 1, new Rook(brd, Color.White));
             placeNewPiece('b', 1, new Knight(brd, Color.White));
@@ -208,6 +217,14 @@ namespace pieces
             placeNewPiece('f', 1, new Bishop(brd, Color.White));
             placeNewPiece('g', 1, new Knight(brd, Color.White));
             placeNewPiece('h', 1, new Rook(brd, Color.White));
+            placeNewPiece('a', 2, new Pawn(brd, Color.White));
+            placeNewPiece('b', 2, new Pawn(brd, Color.White));
+            placeNewPiece('c', 2, new Pawn(brd, Color.White));
+            placeNewPiece('d', 2, new Pawn(brd, Color.White));
+            placeNewPiece('e', 2, new Pawn(brd, Color.White));
+            placeNewPiece('f', 2, new Pawn(brd, Color.White));
+            placeNewPiece('g', 2, new Pawn(brd, Color.White));
+            placeNewPiece('h', 2, new Pawn(brd, Color.White));
         }
     }
 }
